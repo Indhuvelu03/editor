@@ -297,8 +297,9 @@ export default function Editor() {
 
                 dragState.current = { mode: 'drawing', item: null, startPoint: point };
 
-                const color = getLayerColor(currentLayer, currentMode);
-                const strokeWidth = currentLayer === 'Walls' ? 3 : 1.5;
+                // Use lighter grey for all shapes in both modes
+                const color = '#4a4a4a'; // Lighter grey for shapes
+                const strokeWidth = currentLayer === 'Walls' ? 2 : 1;
 
                 // ... drawing logic handled in drag/up ...
                 if (currentTool === 'line') {
@@ -312,7 +313,7 @@ export default function Editor() {
 
                     dimensionText.current = new paper.PointText({
                         point: point, content: '0mm',
-                        fillColor: currentMode === 'dark' ? 'white' : 'black',
+                        fillColor: 'black',
                         fontSize: 14,
                         fontFamily: 'sans-serif'
                     });
@@ -328,7 +329,7 @@ export default function Editor() {
 
                     dimensionText.current = new paper.PointText({
                         point: point, content: 'W: 0 H: 0',
-                        fillColor: currentMode === 'dark' ? 'white' : 'black',
+                        fillColor: 'black',
                         fontSize: 14,
                         fontFamily: 'sans-serif'
                     });
@@ -341,6 +342,13 @@ export default function Editor() {
                         data: { layer: currentLayer, type: 'circle' }
                     });
                     activePath.current = path;
+
+                    dimensionText.current = new paper.PointText({
+                        point: point, content: 'R: 0mm',
+                        fillColor: 'black',
+                        fontSize: 14,
+                        fontFamily: 'sans-serif'
+                    });
 
                 } else if (currentTool === 'poly') {
                     const path = new paper.Path.RegularPolygon({
@@ -355,7 +363,7 @@ export default function Editor() {
                     activePath.current = path;
                     dimensionText.current = new paper.PointText({
                         point: point, content: 'R: 0mm',
-                        fillColor: currentMode === 'dark' ? 'white' : 'black',
+                        fillColor: 'black',
                         fontSize: 14,
                         fontFamily: 'sans-serif'
                     });
@@ -523,7 +531,7 @@ export default function Editor() {
 
                     if (dimensionText.current) {
                         dimensionText.current.content = `R: ${(radius / SCALE_MM_TO_PX).toFixed(1)}mm`;
-                        dimensionText.current.point = newCirc.position;
+                        dimensionText.current.point = newCirc.position.add([0, -radius - 15]);
                     }
                 } else if (path.data.type === 'poly') {
                     const radius = point.getDistance(path.position);
@@ -732,7 +740,8 @@ export default function Editor() {
         drawGrid();
         paper.project.getItems({}).forEach(item => {
             if (item.data?.layer) {
-                item.strokeColor = new paper.Color(getLayerColor(item.data.layer, currentMode));
+                // Use lighter grey for all shapes in both modes
+                item.strokeColor = new paper.Color('#4a4a4a');
                 // If it's a rectangle/circle with fill, make it very subtle
                 if (item.className === 'Path' && item.fillColor) {
                     item.fillColor = new paper.Color(0, 0, 0, currentMode === 'dark' ? 0.2 : 0.05);
