@@ -370,7 +370,7 @@ export default function Editor() {
                 } else if (currentTool === 'text') {
                     const text = new paper.PointText({
                         point: point, content: 'Text',
-                        fillColor: currentMode === 'dark' ? 'white' : 'black',
+                        fillColor: 'black',
                         fontSize: 20, fontFamily: 'sans-serif',
                         data: { layer: currentLayer, type: 'text' }
                     });
@@ -744,11 +744,11 @@ export default function Editor() {
                 item.strokeColor = new paper.Color('#4a4a4a');
                 // If it's a rectangle/circle with fill, make it very subtle
                 if (item.className === 'Path' && item.fillColor) {
-                    item.fillColor = new paper.Color(0, 0, 0, currentMode === 'dark' ? 0.2 : 0.05);
+                    item.fillColor = new paper.Color(0, 0, 0, 0.05);
                 }
             }
             if (item.className === 'PointText') {
-                (item as paper.PointText).fillColor = new paper.Color(currentMode === 'dark' ? 'white' : 'black');
+                (item as paper.PointText).fillColor = new paper.Color('black');
                 (item as paper.PointText).fontFamily = 'sans-serif';
                 (item as paper.PointText).fontWeight = 'normal';
             }
@@ -771,7 +771,7 @@ export default function Editor() {
         if (oldGrid) oldGrid.remove();
 
         const gridLayer = new paper.Layer({ name: 'grid' });
-        const color = mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)';
+        const color = 'rgba(0,0,0,0.05)';
 
         // ... Simple grid draw loop ...
         for (let x = Math.ceil(view.bounds.left / GRID_SIZE) * GRID_SIZE; x < view.bounds.right; x += GRID_SIZE) {

@@ -43,7 +43,7 @@ export default function Home() {
             <Header />
             <div className="flex flex-1 overflow-hidden relative">
                 <SidebarLeft />
-                <div className="flex-1 relative bg-background-light dark:bg-background-dark overflow-hidden">
+                <div className="flex-1 relative bg-white overflow-hidden">
                     <Editor />
                 </div>
                 <SidebarRight />
